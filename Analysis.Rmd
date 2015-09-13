@@ -1,0 +1,39 @@
+---
+title: "analysis"
+author: "aaron gowins"
+date: "August 12, 2015"
+output:
+  html_document:
+    keep_md: true
+---
+
+
+```{r, cache=TRUE}
+library(quantmod)
+getSymbols('MSFT',src='yahoo')
+getSymbols('AAPL',src='yahoo')
+head(MSFT)
+
+barChart(MSFT)
+barChart(AAPL)
+
+MSFT<-as.data.frame(MSFT)
+head(MSFT)
+plot(as.Date(rownames(MSFT)),MSFT$MSFT.Close)
+
+AAPL<-as.data.frame(AAPL)
+head(AAPL)
+plot(as.Date(rownames(AAPL)),AAPL$AAPL.Close)
+
+difference<-c(AAPL$AAPL.Close[1],diff(AAPL$AAPL.Close))
+AAPL$percent_change<-(difference/AAPL$AAPL.Close)*100
+head(AAPL)
+
+difference<-c(MSFT$MSFT.Close[1],diff(MSFT$MSFT.Close))
+MSFT$percent_change<-(difference/MSFT$MSFT.Close)*100
+head(MSFT)
+
+library(Hmisc)
+cor.test(AAPL$percent_change,MSFT$percent_change)
+```
+
